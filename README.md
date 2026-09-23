@@ -1,48 +1,75 @@
-# Sri Lanka Postal-Code Telegram Bot
+# Lanka Postcode Bot
 
-An open-source TypeScript project for a Telegram bot that will help users find Sri Lankan postal-code information. Postal data comes only from official Department of Posts, Sri Lanka sources.
+Lanka Postcode Bot is an independent Telegram bot for finding Sri Lankan postal-code information by:
 
-Phase 5 adds a reusable, read-only search service over the verified Neon PostgreSQL data. The project still does not implement Telegram commands, a search API, or message formatting.
+- Five-digit postal code
+- Exact post-office name
+- Partial post-office name
+- District
+- Province
+
+The bot reads verified records from Neon PostgreSQL. Its data is collected from the official Department of Posts, Sri Lanka Postcode Directory.
+
+> This is an independent open-source project and is not an official Sri Lanka Post Telegram bot. It is not endorsed by or operated by the Department of Posts, Sri Lanka.
+
+## Features
+
+- `/start` and `/help` Telegram commands
+- Plain-text postal search results with no empty fields
+- Multiple-match and no-result responses
+- Parameterized Drizzle queries; user text is never concatenated into SQL
+- Input validation and a 100-character search limit
+- Best-effort in-memory flood protection
+- Generic user-facing error messages that do not expose internals
+- Secret-token validation for Telegram webhook requests
+- Vercel-compatible serverless webhook endpoint
+- Database-free unit and security tests
 
 ## Technology
 
-- Node.js 20 or newer and TypeScript
-- grammY for the future Telegram bot
-- Neon PostgreSQL with Drizzle ORM
-- Zod and dotenv for configuration and validation
-- PDF.js for extracting the official Postcode Directory
+- Node.js 20 or newer
+- TypeScript in strict mode
+- grammY
+- Neon PostgreSQL
+- Drizzle ORM
+- Zod
+- dotenv for local environment variables
+- Vercel Functions
 - Node's built-in test runner
 
 ## Project structure
 
 ```text
 .
-|-- data/
-|   |-- raw/                          # Downloaded sources; ignored by Git
-|   |-- postcodes.json                # Reviewable normalized dataset
-|   |-- postcodes.csv                 # Spreadsheet-friendly dataset
-|   |-- postcodes.meta.json           # Dataset-level source metadata
-|   |-- postcodes.validation.json     # Validation and review report
-|   `-- import-report.json            # Latest import and DB verification report
-|-- drizzle/                          # Generated database migrations
+|-- api/
+|   `-- telegram.ts                 # Vercel Telegram webhook function
+|-- data/                           # Reviewed normalized postal dataset and reports
+|-- drizzle/                        # Generated PostgreSQL migrations
+|-- scripts/
+|   `-- check-secrets.mjs           # Tracked/candidate-file credential scan
 |-- src/
-|   |-- config/env.ts                 # Validated environment configuration
-|   |-- db/                           # Neon connection and Drizzle schema
-|   |-- scripts/                      # Import and verification commands
+|   |-- bot/
+|   |   |-- handlers.ts             # Telegram commands and text-message flow
+|   |   |-- index.ts                # grammY bot factory
+|   |   |-- messages.ts             # Safe user-facing text and result formatting
+|   |   `-- rate-limiter.ts         # Ephemeral in-memory flood protection
+|   |-- config/env.ts               # Zod environment validation
+|   |-- db/                          # Neon connection and Drizzle schema
+|   |-- scripts/                     # Import and verification commands
 |   `-- services/
-|       |-- postcode/                 # Collection, validation, and import pipeline
-|       `-- search/
-|           |-- classifier.ts         # Deterministic query classification
-|           |-- formatter.ts          # Stable result formatting
-|           |-- queries.ts            # Parameterized PostgreSQL queries
-|           |-- search.ts             # Reusable search orchestration
-|           |-- search.test.ts        # Database-free search tests
-|           `-- types.ts              # Search request/response contracts
+|       |-- postcode/                # Collection, validation, and import pipeline
+|       `-- search/                  # Reusable database search service
 |-- .env.example
 |-- drizzle.config.ts
 |-- package.json
 `-- tsconfig.json
 ```
+
+Additional project guides:
+
+- [Vercel deployment](docs/DEPLOYMENT.md)
+- [Security policy](SECURITY.md)
+- [Contributing](CONTRIBUTING.md)
 
 ## Install
 
@@ -50,198 +77,151 @@ Phase 5 adds a reusable, read-only search service over the verified Neon Postgre
 npm install
 ```
 
-For database commands, copy `.env.example` to `.env` and add your own Neon connection string. The postcode collector does not require database credentials.
+Copy `.env.example` to `.env`, then fill in your own local values:
 
-## Collect the official postcode data
-
-Run:
-
-```bash
-npm run postcode:collect
+```dotenv
+BOT_TOKEN=
+DATABASE_URL=
+NODE_ENV=
+TELEGRAM_WEBHOOK_SECRET=
 ```
 
-The command:
+- `BOT_TOKEN`: create a bot with [BotFather](https://t.me/BotFather) and use the token only in `.env` or a deployment secret store.
+- `DATABASE_URL`: copy the pooled PostgreSQL connection string from the Neon dashboard.
+- `NODE_ENV`: use `development` locally, `test` for test environments, or `production` in Vercel.
+- `TELEGRAM_WEBHOOK_SECRET`: generate a private random value containing letters, numbers, `_`, or `-`; use at least 16 characters.
 
-1. Downloads the official PDF and postcode search page.
-2. Saves the unmodified downloads under the ignored `data/raw/` directory.
-3. Extracts postcode and English office-label rows from the PDF.
-4. Parses district and office-type abbreviations defined by the PDF legend.
-5. Cross-checks the extracted rows against the official search page.
-6. Normalizes whitespace and obvious unmatched-parenthesis extraction artifacts.
-7. Validates every record and reports suspicious source values and possible duplicates.
-8. Writes the review files under `data/`.
+Never commit `.env`. The repository ignores `.env`, `.env.*`, and Vercel's local state while explicitly allowing the placeholder-only `.env.example`.
 
-The collector fails clearly when a source cannot be downloaded, a source has an unexpected structure, the PDF cannot be parsed, or no records are extracted. It never substitutes fake data.
+## Neon and database setup
 
-## Generated files
+1. Create a PostgreSQL project in the [Neon Console](https://console.neon.tech/).
+2. Open the connection details and select a pooled connection string.
+3. Put that value in `DATABASE_URL` inside the ignored local `.env` file.
+4. Generate a migration after an intentional schema change:
 
-- `data/postcodes.json` contains clean records suitable for review before Phase 4.
-- `data/postcodes.csv` contains the same records with null values represented by empty cells.
-- `data/postcodes.meta.json` records collection time, parser version, official URLs, source roles, and SHA-256 hashes.
-- `data/postcodes.validation.json` contains counts, invalid records, suspicious records, possible duplicate groups, missing-field counts, and PDF/search-page differences.
-- `data/import-report.json` records the latest dry-run or real import summary without credentials.
+   ```bash
+   npm run db:generate
+   ```
 
-Generated records contain only the current database fields:
-
-```json
-{
-  "name": "...",
-  "postalCode": ".....",
-  "officeType": "Post Office",
-  "district": null,
-  "province": null,
-  "address": null,
-  "sourceUrl": "https://slpost.gov.lk/wp-content/uploads/2022/11/POST-CODE-BOOK-.pdf"
-}
-```
-
-Postcodes remain strings so leading zeroes are preserved. No postal code is generated or corrected by the collector.
-
-## Validation and review rules
-
-- Office names must not be empty.
-- Postcodes must contain exactly five ASCII digits.
-- `(S)` is interpreted using the directory legend as `Sub Post Office`; unmarked alphabetical entries are represented as `Post Office`.
-- Districts are populated only from abbreviations explicitly defined in the directory legend.
-- Provinces are populated only when the row explicitly includes a province abbreviation defined by the legend.
-- Addresses remain null because the alphabetical directory rows do not contain addresses.
-- Duplicate-looking records are reported by normalized name, postcode, and office type; they are not silently removed.
-- Raw office labels, PDF page numbers, and row numbers remain in validation findings for review.
-
-## Parsing limitations
-
-- The PDF has one name field in each of English, Sinhala, and Tamil. The current database schema has one name column, so this phase uses the English column and does not discard or rewrite the raw PDF.
-- The separate Colombo-zone reference on PDF page 4 is image-only and is not part of the machine-readable alphabetical office list used for the dataset.
-- The PDF legend defines `APR` for Ampara, while some source rows use the undefined abbreviation `AR`. Those records retain a null district and appear in the validation report instead of being guessed.
-- The directory does not provide a distinct machine-readable marker that reliably identifies Receiving Post Offices. The pipeline does not invent one.
-- Any disagreement between the official PDF and official search page is retained in the cross-source report for manual review.
-
-## Tests
-
-Run:
-
-```bash
-npm test
-```
-
-The tests cover collection validation, import behavior, and the required search scenarios including exact and partial searches, casing, whitespace, limits, district/province matching, Unicode, injection-like input, and empty queries. They use in-memory repositories and never connect to production Neon. Synthetic values are test fixtures only and never appear in the generated production dataset.
-
-## Database commands
-
-The Phase 2 database foundation remains available:
-
-```bash
-npm run db:generate
-npm run db:migrate
-npm run db:studio
-npm run db:check
-```
-
-The collector never calls these commands and never inserts its dataset into Neon.
-
-## Importing postal data
-
-The importer reads `data/postcodes.json`; it does not scrape or download any website.
-
-1. Configure `DATABASE_URL` in your ignored `.env` file.
-2. Apply pending migrations, including the logical uniqueness index:
+5. Apply committed migrations:
 
    ```bash
    npm run db:migrate
    ```
 
-3. Preview the import without changing Neon:
+6. Verify connectivity without printing the connection string:
 
    ```bash
-   npm run postcode:import -- --dry-run
+   npm run db:check
    ```
 
-4. Review the calculated inserted, updated, unchanged, invalid, duplicate, and skipped counts.
-5. Run the real import:
+Optional database inspection is available with `npm run db:studio`.
 
-   ```bash
-   npm run postcode:import
-   ```
+## Postal data pipeline
 
-6. Query Neon directly to verify the stored data:
+The committed normalized dataset was built in earlier phases from the official Postcode Directory. Raw downloads are reproducible and ignored by Git.
 
-   ```bash
-   npm run postcode:verify
-   ```
-
-Logical identity is the exact normalized combination of office name, postal code, and office type. Postal code alone is not unique. The same constraint is enforced by PostgreSQL.
-
-Before writing, the importer reads existing offices in one query and calculates which rows are new, changed, or unchanged. New and changed records are sent in one atomic multi-row PostgreSQL upsert. Existing records not present in the dataset are never deleted. Running the same dataset again produces no duplicate rows and does not update unchanged timestamps.
-
-The verification command reports total records, invalid postal-code formats, missing names, logical duplicates, missing source URLs, and office-type distribution using Neon queries rather than the JSON file.
-
-## Postal-code search service
-
-Import the reusable function from the search service:
-
-```ts
-import { searchPostalCode } from "./services/search/index.js";
-
-const response = await searchPostalCode("Batticaloa");
+```bash
+npm run postcode:collect
+npm run postcode:import -- --dry-run
+npm run postcode:import
+npm run postcode:verify
 ```
 
-The service supports:
+Review `data/postcodes.validation.json` before importing a newly collected dataset. The collector does not generate missing postal records or silently correct uncertain source values. Postal codes remain strings so leading zeroes are preserved.
 
-- Exact five-digit postcode lookup
-- Case-insensitive exact office-name lookup
-- Office-name prefix and contains matching
-- Explicit district searches such as `Batticaloa District`
-- Explicit province searches such as `Western Province`
-- Conservative whitespace and trailing-punctuation normalization
-- Unicode-safe input and output
-- Configurable result limits from 1 to 50, with a default of 10
-- Database-backed suggestions containing only stored office names
+The importer uses the logical combination of office name, postal code, and office type. Postal code alone is not treated as unique because the official source may associate one code with multiple valid offices.
 
-Example response shape:
+## Local Telegram development
 
-```json
-{
-  "query": "Batticaloa",
-  "type": "office_name",
-  "results": [
-    {
-      "id": "database-uuid",
-      "name": "Batticaloa",
-      "postalCode": "30000",
-      "officeType": "Post Office",
-      "district": "Batticaloa",
-      "province": null,
-      "address": null,
-      "sourceUrl": "https://slpost.gov.lk/..."
-    }
-  ],
-  "total": 1,
-  "hasMore": false,
-  "suggestions": [],
-  "error": null
-}
+Local development uses grammY long polling. Vercel does not run this process.
+
+1. Configure `BOT_TOKEN`, `DATABASE_URL`, and `NODE_ENV=development` in `.env`.
+2. Apply the database migrations and import the reviewed postal records if needed.
+3. Start the local bot:
+
+   ```bash
+   npm run dev
+   ```
+
+4. Send `/start`, a post-office name, or a five-digit postal code to your bot.
+
+The startup log reports only the mode and never prints credentials.
+
+## Tests and quality checks
+
+Tests use mocks and in-memory repositories. They do not connect to Neon and do not require production credentials.
+
+```bash
+npm run typecheck
+npm test
+npm run test:security
+npm run build
+npm run security:scan
 ```
 
-`total` is the number of returned records. `hasMore` indicates that the database returned another matching row beyond the requested limit.
+Coverage includes commands, exact and partial searches, Unicode, no/multiple results, validation, database and Telegram failures, rate limiting, malformed webhooks, missing configuration, webhook secrets, injection-like text, token/URL-shaped input, HTML-like input, and excessive message length.
 
-Search ordering is deterministic:
+`security:scan` checks Git-tracked and unignored candidate files for high-risk credential patterns and forbidden secret-file names. It does not inspect the ignored local `.env` or print secret values.
 
-1. Exact postcode
-2. Exact office name
-3. Office name starting with the query
-4. Office name containing the query
-5. District match
-6. Province match
+No separate lint tool is configured; strict TypeScript type checking is the project's static code-quality check.
 
-Exact names are queried first. Partial matching runs only when an exact office name is absent. Empty and malformed numeric queries return structured validation results without querying the database. All user values are passed as Drizzle parameters; SQL is never constructed by concatenating user input.
+## Vercel deployment
 
-### Search performance
+The production architecture uses `api/telegram.ts` as a Vercel Function. It processes one Telegram update per HTTPS request and does not start a long-running polling process. No `vercel.json` is required for this standard `/api` TypeScript function.
 
-Filtering, ranking, ordering, and limiting happen in PostgreSQL. The service fetches at most `limit + 1` rows and never loads the complete table into Node.js.
+1. Push the repository to the repository owner's GitHub account.
+2. Import the GitHub repository into Vercel.
+3. Add these Environment Variables in Vercel for the Production environment:
 
-The existing B-tree index supports exact postcode lookup. Case-insensitive contains searches do not efficiently use a normal B-tree index, but a sequential scan is reasonable for the current 2,111-row dataset. If the dataset grows substantially, consider PostgreSQL's `pg_trgm` extension with GIN indexes on searchable text columns after measuring real query performance; Phase 5 does not add those indexes prematurely.
+   - `BOT_TOKEN`
+   - `DATABASE_URL`
+   - `NODE_ENV` with value `production`
+   - `TELEGRAM_WEBHOOK_SECRET`
 
-## Source attribution
+4. Deploy the project.
+5. Note the HTTPS deployment URL. The webhook endpoint is:
+
+   ```text
+   https://your-vercel-domain.example/api/telegram
+   ```
+
+6. Register that URL with Telegram's `setWebhook` method, sending the value from `TELEGRAM_WEBHOOK_SECRET` as Telegram's `secret_token`. Use environment-variable references in your terminal; never paste credentials into source files, documentation, shell history, or issue reports.
+7. Test `/start`, a known postal code, an office name, and an invalid webhook secret.
+
+Telegram sends the configured secret in the `X-Telegram-Bot-Api-Secret-Token` request header. The endpoint rejects a missing or incorrect value before parsing the update.
+
+### Post-deployment checks
+
+- Confirm the endpoint uses HTTPS.
+- Confirm valid Telegram updates receive HTTP 200.
+- Confirm a missing or invalid webhook secret receives HTTP 401.
+- Test `/start` and postal-code searches.
+- Check that error responses and Vercel logs contain no credentials.
+- Confirm `.env` is not present in GitHub with `git ls-files .env`.
+
+The in-memory limiter is intentionally small and simple for the initial deployment. Vercel instances do not share memory, so it is best-effort protection rather than a distributed quota system.
+
+## Privacy and security
+
+The application does not create a Telegram-user table and does not store usernames, names, user IDs, or chat IDs in Neon. The rate limiter temporarily holds an identifier only in a running process's memory and removes entries as windows expire or instances terminate.
+
+Telegram output uses plain text. User input is never used as markup, a link, executable code, or concatenated SQL. Technical failures are logged with generic event descriptions rather than exception text, URLs, tokens, or request content.
+
+Before every public push, run the quality commands above and inspect:
+
+```bash
+git status
+git diff
+git diff --cached
+git ls-files .env
+git remote -v
+```
+
+If a real credential ever enters a commit, revoke or rotate it immediately and remove it from Git history before publishing. Deleting it only from the latest file is not sufficient.
+
+## Official data source and attribution
 
 Data source: **Department of Posts, Sri Lanka / Sri Lanka Post**
 
@@ -249,8 +229,12 @@ Data source: **Department of Posts, Sri Lanka / Sri Lanka Post**
 - Official postcode search: <https://slpost.gov.lk/postcode_new/>
 - Official Postcode Directory: <https://slpost.gov.lk/wp-content/uploads/2022/11/POST-CODE-BOOK-.pdf>
 
-This project does not claim ownership of the official postal data. Each generated record retains the official PDF URL, and the dataset metadata retains both official source URLs and their hashes.
+This project does not claim ownership of the official postal data. Dataset metadata retains the official source URLs and source hashes.
 
-## Phase 6
+## Contributing
 
-Phase 6 will connect this search service to focused grammY Telegram handlers and format user-facing bot messages. It will not be implemented automatically.
+Issues and focused pull requests are welcome after the repository is published. Do not include credentials, private Telegram updates, production database exports, or personal user data in issues, commits, tests, or screenshots. Run the full test and security checklist before opening a pull request.
+
+## License status
+
+No license has been selected yet, so no `LICENSE` file has been added. The repository owner should choose and add an appropriate open-source license before presenting the repository as licensed open-source software. Contributors should not assume reuse rights until that decision is recorded.
