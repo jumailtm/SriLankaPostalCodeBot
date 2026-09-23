@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "post_offices_source_identity_uidx" ON "post_offices" USING btree ("name","postal_code","office_type");

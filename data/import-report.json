@@ -1,0 +1,33 @@
+{
+  "importedAt": "2026-09-23T04:54:40.302Z",
+  "sourceUrl": "https://slpost.gov.lk/wp-content/uploads/2022/11/POST-CODE-BOOK-.pdf",
+  "dryRun": false,
+  "totalSourceRecords": 2111,
+  "validRecords": 2111,
+  "invalidRecords": 0,
+  "duplicateRecords": 0,
+  "inserted": 0,
+  "updated": 0,
+  "unchanged": 2111,
+  "skipped": 0,
+  "invalid": [],
+  "duplicates": [],
+  "verification": {
+    "totalRecords": 2111,
+    "postalCodeDataType": "character varying",
+    "invalidPostalCodes": 0,
+    "missingNames": 0,
+    "duplicateLogicalRecords": 0,
+    "missingSourceUrls": 0,
+    "officeTypeDistribution": [
+      {
+        "officeType": "Post Office",
+        "count": 582
+      },
+      {
+        "officeType": "Sub Post Office",
+        "count": 1529
+      }
+    ]
+  }
+}

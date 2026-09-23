@@ -1,0 +1,576 @@
+{
+  "generatedAt": "2026-09-23T04:38:09.010Z",
+  "totalExtractedRecords": 2111,
+  "validRecords": 2111,
+  "invalidRecords": 0,
+  "recordsWithMissingFields": 2111,
+  "missingFields": {
+    "officeType": 0,
+    "district": 24,
+    "province": 2103,
+    "address": 2111
+  },
+  "possibleDuplicates": 0,
+  "sourceComparison": {
+    "pdfRecords": 2111,
+    "searchPageRecords": 2111,
+    "pdfOnly": [
+      "50324|mukiriyawa(ad)(s)"
+    ],
+    "searchPageOnly": [
+      "50324|m?ukiriyawa(ad)(s)"
+    ]
+  },
+  "invalid": [],
+  "suspicious": [
+    {
+      "source": {
+        "postalCode": "32350",
+        "officeLabel": "Addalaichenai (AR)",
+        "pageNumber": 5,
+        "rowNumber": 3
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32400",
+        "officeLabel": "Akkarapattu(AR)",
+        "pageNumber": 5,
+        "rowNumber": 15
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "81402",
+        "officeLabel": "Aturaliya((MH)(S)",
+        "pageNumber": 7,
+        "rowNumber": 32
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "60604",
+        "officeLabel": "Balalla ((KG)(S)",
+        "pageNumber": 8,
+        "rowNumber": 9
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "20308",
+        "officeLabel": "Balana ((KY)(S)",
+        "pageNumber": 8,
+        "rowNumber": 10
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "90354",
+        "officeLabel": "Bogahakumbura ((BD)(S)",
+        "pageNumber": 9,
+        "rowNumber": 18
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32306",
+        "officeLabel": "Chavalakadai(AR)(S)",
+        "pageNumber": 10,
+        "rowNumber": 23
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32126",
+        "officeLabel": "Damanewela((APR)(S)",
+        "pageNumber": 10,
+        "rowNumber": 37
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "70019",
+        "officeLabel": "Dambuluwana((RN)(S)",
+        "pageNumber": 10,
+        "rowNumber": 43
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "10656",
+        "officeLabel": "Dedigamuwa((CO)(S)",
+        "pageNumber": 11,
+        "rowNumber": 16
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "60044",
+        "officeLabel": "Delwita((KG)(S)",
+        "pageNumber": 12,
+        "rowNumber": 2
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32038",
+        "officeLabel": "Devalahinda((APR)(S)",
+        "pageNumber": 12,
+        "rowNumber": 14
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "51094",
+        "officeLabel": "Dewagala((PR)(S)",
+        "pageNumber": 12,
+        "rowNumber": 17
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "90324",
+        "officeLabel": "Dimbulana((BD)(S)",
+        "pageNumber": 12,
+        "rowNumber": 35
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "60530",
+        "officeLabel": "Dodangaslanda((KG)",
+        "pageNumber": 13,
+        "rowNumber": 9
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "60712",
+        "officeLabel": "Gallewa((KG)(S)",
+        "pageNumber": 15,
+        "rowNumber": 24
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "70105",
+        "officeLabel": "Hatangala((RN)(S)",
+        "pageNumber": 18,
+        "rowNumber": 16
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "10714",
+        "officeLabel": "Hewainna((CO)(S)",
+        "pageNumber": 18,
+        "rowNumber": 42
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32514",
+        "officeLabel": "Hulannuge(AR)(S)",
+        "pageNumber": 19,
+        "rowNumber": 39
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "61514",
+        "officeLabel": "Inginimitiya((PX)(S)",
+        "pageNumber": 20,
+        "rowNumber": 39
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "31212",
+        "officeLabel": "Kaddaiparichchan ((TC)(S)",
+        "pageNumber": 21,
+        "rowNumber": 21
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "50454",
+        "officeLabel": "Kallanchiya ((AD)(S)",
+        "pageNumber": 22,
+        "rowNumber": 12
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32300",
+        "officeLabel": "Kalmunai (AR)",
+        "pageNumber": 22,
+        "rowNumber": 14
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "61360",
+        "officeLabel": "Kalpitiya ((PX)",
+        "pageNumber": 22,
+        "rowNumber": 15
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32405",
+        "officeLabel": "Kannagipuram (AR)(S)",
+        "pageNumber": 23,
+        "rowNumber": 8
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32250",
+        "officeLabel": "Karativu (AR)",
+        "pageNumber": 23,
+        "rowNumber": 32
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32418",
+        "officeLabel": "Komari (AR) (S)",
+        "pageNumber": 26,
+        "rowNumber": 13
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32417",
+        "officeLabel": "Koralkalapu(AR)(S)",
+        "pageNumber": 26,
+        "rowNumber": 20
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32512",
+        "officeLabel": "Lahugala (AR) (S)",
+        "pageNumber": 28,
+        "rowNumber": 5
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "21140",
+        "officeLabel": "Mahawela ((MT)",
+        "pageNumber": 30,
+        "rowNumber": 9
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32198",
+        "officeLabel": "Malwatta (AR) (S)",
+        "pageNumber": 31,
+        "rowNumber": 3
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32314",
+        "officeLabel": "Marathamune (AR)",
+        "pageNumber": 31,
+        "rowNumber": 35
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32308",
+        "officeLabel": "Navithanveli(AR)(S)",
+        "pageNumber": 36,
+        "rowNumber": 4
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "22568",
+        "officeLabel": "Nayapana Colony((NW)(S)",
+        "pageNumber": 36,
+        "rowNumber": 16
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32340",
+        "officeLabel": "Nintavur(AR)",
+        "pageNumber": 36,
+        "rowNumber": 43
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32360",
+        "officeLabel": "Oluwil(AR)",
+        "pageNumber": 37,
+        "rowNumber": 24
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32354",
+        "officeLabel": "Palamunai(AR)",
+        "pageNumber": 38,
+        "rowNumber": 20
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "61354",
+        "officeLabel": "Palliwasalturai((PX)(S)",
+        "pageNumber": 38,
+        "rowNumber": 35
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32508",
+        "officeLabel": "Panama(AR)(S)",
+        "pageNumber": 39,
+        "rowNumber": 7
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32506",
+        "officeLabel": "Pasarichchenai((AR)(S)",
+        "pageNumber": 40,
+        "rowNumber": 4
+      },
+      "messages": [
+        "Unknown district abbreviation: AR",
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32316",
+        "officeLabel": "Periyaneelavanai(AR)(S)",
+        "pageNumber": 40,
+        "rowNumber": 35
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32500",
+        "officeLabel": "Pottuvil(AR)",
+        "pageNumber": 41,
+        "rowNumber": 43
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "81316",
+        "officeLabel": "Radawela((MH)(S)",
+        "pageNumber": 42,
+        "rowNumber": 33
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32280",
+        "officeLabel": "Sainthamaruthu(AR)",
+        "pageNumber": 44,
+        "rowNumber": 10
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32200",
+        "officeLabel": "Sammanthurai(AR)",
+        "pageNumber": 44,
+        "rowNumber": 15
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32415",
+        "officeLabel": "Thambiluvil(AR)(S)",
+        "pageNumber": 47,
+        "rowNumber": 10
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "32420",
+        "officeLabel": "Tirukkovil(AR)",
+        "pageNumber": 47,
+        "rowNumber": 30
+      },
+      "messages": [
+        "Unknown district abbreviation: AR"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "50067",
+        "officeLabel": "Uttimaduwa((AD)(S)",
+        "pageNumber": 49,
+        "rowNumber": 27
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    },
+    {
+      "source": {
+        "postalCode": "50516",
+        "officeLabel": "Walahaviddawewa((AD)(S)",
+        "pageNumber": 51,
+        "rowNumber": 6
+      },
+      "messages": [
+        "Removed an unmatched opening parenthesis before the district suffix"
+      ]
+    }
+  ],
+  "duplicateGroups": [],
+  "sourceNotes": [
+    "The PDF's English column is used because the current database schema has one name field.",
+    "Address is not present in the directory rows and remains null.",
+    "Province is populated only when the PDF explicitly includes a province abbreviation.",
+    "The image-only Colombo zone reference page is not part of the machine-readable alphabetical office list.",
+    "The directory defines (S) as Sub Post; unmarked alphabetical entries are represented as Post Office.",
+    "The directory does not provide a distinct machine-readable marker for Receiving Post Offices."
+  ]
+}

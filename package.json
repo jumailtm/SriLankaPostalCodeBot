@@ -1,0 +1,38 @@
+{
+  "name": "sri-lanka-postal-code-bot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A Telegram bot for looking up Sri Lankan postal codes.",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc --project tsconfig.json",
+    "start": "node dist/index.js",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:check": "tsx src/db/check-connection.ts",
+    "postcode:collect": "tsx src/services/postcode/collect.ts",
+    "postcode:import": "tsx src/scripts/import-postcodes.ts",
+    "postcode:verify": "tsx src/scripts/verify-postcodes.ts",
+    "test": "tsx --test src/services/postcode/postcode.test.ts src/services/postcode/importer.test.ts src/services/search/search.test.ts"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
+    "dotenv": "^17.2.2",
+    "drizzle-orm": "^0.45.3",
+    "grammy": "^1.38.2",
+    "pdfjs-dist": "^6.3.289",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "drizzle-kit": "^0.31.4",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}

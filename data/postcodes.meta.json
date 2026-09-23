@@ -1,0 +1,30 @@
+{
+  "collectedAt": "2026-09-23T04:38:09.010Z",
+  "parserVersion": "1.0.0",
+  "recordCount": 2111,
+  "sources": [
+    {
+      "url": "https://slpost.gov.lk/wp-content/uploads/2022/11/POST-CODE-BOOK-.pdf",
+      "type": "official-pdf",
+      "purpose": "primary",
+      "sha256": "c8ea0cc844a54daabcedd43a254ae0e48aaac14294c1b5fd2a41edee54f5ed22"
+    },
+    {
+      "url": "https://slpost.gov.lk/postcode_new/",
+      "type": "official-search-page",
+      "purpose": "cross-check",
+      "sha256": "095274e34d3f79cc19531ebb2b9df2bc8cc890298da2f12eeb1bd873442f7f67"
+    }
+  ],
+  "fieldsNotPresentInSource": [
+    "address"
+  ],
+  "notes": [
+    "The PDF's English column is used because the current database schema has one name field.",
+    "Address is not present in the directory rows and remains null.",
+    "Province is populated only when the PDF explicitly includes a province abbreviation.",
+    "The image-only Colombo zone reference page is not part of the machine-readable alphabetical office list.",
+    "The directory defines (S) as Sub Post; unmarked alphabetical entries are represented as Post Office.",
+    "The directory does not provide a distinct machine-readable marker for Receiving Post Offices."
+  ]
+}
