@@ -13,26 +13,42 @@ async function verifyDeployment() {
     throw new Error("The deployment endpoint must use HTTPS.");
   }
 
-  const getResponse = await fetch(endpoint);
-  const missingSecretResponse = await fetch(endpoint, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ update_id: 2_147_483_645 }),
-  });
-  const validSecretResponse = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      "x-telegram-bot-api-secret-token": webhookSecret,
-    },
-    body: JSON.stringify({ update_id: 2_147_483_646 }),
-  });
+  let statuses;
+  for (let attempt = 1; attempt <= 10; attempt += 1) {
+    const getResponse = await fetch(endpoint);
+    const missingSecretResponse = await fetch(endpoint, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ update_id: 2_147_483_645 }),
+    });
+    const validSecretResponse = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-telegram-bot-api-secret-token": webhookSecret,
+      },
+      body: JSON.stringify({ update_id: 2_147_483_646 }),
+    });
+
+    statuses = {
+      get: getResponse.status,
+      missingSecret: missingSecretResponse.status,
+      validSecret: validSecretResponse.status,
+    };
+    if (statuses.get === 405 && statuses.missingSecret === 401 && statuses.validSecret === 200) {
+      break;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 3_000));
+  }
 
   if (
-    getResponse.status !== 405 ||
-    missingSecretResponse.status !== 401 ||
-    validSecretResponse.status !== 200
+    statuses?.get !== 405 ||
+    statuses.missingSecret !== 401 ||
+    statuses.validSecret !== 200
   ) {
+    console.error(
+      `Unexpected webhook statuses: GET=${statuses?.get ?? "none"}, missing-secret=${statuses?.missingSecret ?? "none"}, valid-secret=${statuses?.validSecret ?? "none"}.`,
+    );
     throw new Error("The live webhook returned an unexpected status.");
   }
 
@@ -59,7 +75,7 @@ async function verifyDeployment() {
   }
 
   console.log(
-    `Live webhook checks passed: GET=${getResponse.status}, missing-secret=${missingSecretResponse.status}, valid-secret=${validSecretResponse.status}.`,
+    `Live webhook checks passed: GET=${statuses.get}, missing-secret=${statuses.missingSecret}, valid-secret=${statuses.validSecret}.`,
   );
   console.log("Telegram reports the expected production webhook URL.");
 }
