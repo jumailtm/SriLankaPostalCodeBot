@@ -1,0 +1,19 @@
+# Local credentials and Vercel state
+.env
+.env.*
+!.env.example
+.vercel/
+
+# Local dependencies and generated output
+node_modules/
+dist/
+coverage/
+logs/
+tmp/
+temp/
+*.log
+*.tmp
+*.temp
+
+# Reproducible raw source downloads
+data/raw/
