@@ -1,14 +1,15 @@
 {
-  "name": "sri-lanka-postal-code-bot",
+  "name": "lanka-postcode-bot",
   "version": "0.1.0",
   "private": true,
   "description": "A Telegram bot for looking up Sri Lankan postal codes.",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc --project tsconfig.json",
-    "start": "node dist/index.js",
+    "start": "node dist/src/index.js",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
@@ -16,7 +17,9 @@
     "postcode:collect": "tsx src/services/postcode/collect.ts",
     "postcode:import": "tsx src/scripts/import-postcodes.ts",
     "postcode:verify": "tsx src/scripts/verify-postcodes.ts",
-    "test": "tsx --test src/services/postcode/postcode.test.ts src/services/postcode/importer.test.ts src/services/search/search.test.ts"
+    "test": "tsx --test src/services/postcode/postcode.test.ts src/services/postcode/importer.test.ts src/services/search/search.test.ts src/config/env.test.ts src/bot/bot.test.ts src/bot/security.test.ts api/telegram.test.ts",
+    "test:security": "tsx --test src/bot/security.test.ts api/telegram.test.ts",
+    "security:scan": "node scripts/check-secrets.mjs"
   },
   "engines": {
     "node": ">=20.0.0"
