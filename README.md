@@ -62,6 +62,7 @@ The bot reads verified records from Neon PostgreSQL. Its data is collected from 
 |-- .env.example
 |-- drizzle.config.ts
 |-- package.json
+|-- vercel.json                      # Build-output override for Vercel
 `-- tsconfig.json
 ```
 
@@ -169,7 +170,7 @@ No separate lint tool is configured; strict TypeScript type checking is the proj
 
 ## Vercel deployment
 
-The production architecture uses `api/telegram.ts` as a Vercel Function. It processes one Telegram update per HTTPS request and does not start a long-running polling process. No `vercel.json` is required for this standard `/api` TypeScript function.
+The production architecture uses `api/telegram.ts` as a Vercel Function. It processes one Telegram update per HTTPS request and does not start a long-running polling process. The minimal `vercel.json` points Vercel's static build check at the existing TypeScript `dist` output; it contains no domains or credentials.
 
 1. Push the repository to the repository owner's GitHub account.
 2. Import the GitHub repository into Vercel.

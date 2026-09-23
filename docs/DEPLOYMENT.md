@@ -2,6 +2,8 @@
 
 The production bot uses Telegram webhooks through the Vercel Function at `/api/telegram`. It does not start the local long-polling process on Vercel.
 
+The committed `vercel.json` contains only the `dist` output-directory override required by this framework-free project. It contains no environment values or deployment domains.
+
 ## Prerequisites
 
 - A GitHub repository owned by the project owner
