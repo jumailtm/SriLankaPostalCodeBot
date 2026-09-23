@@ -38,16 +38,22 @@ test("valid webhook secrets compare successfully", () => {
 
 test("a valid webhook update is passed to grammY", async () => {
   const updates: Update[] = [];
+  const lifecycle: string[] = [];
   const response = await handleTelegramWebhook(request('{"update_id":1}'), {
     environment,
     bot: {
+      async init() {
+        lifecycle.push("init");
+      },
       async handleUpdate(update) {
+        lifecycle.push("handleUpdate");
         updates.push(update);
       },
     },
   });
   assert.equal(response.status, 200);
   assert.equal(updates[0]?.update_id, 1);
+  assert.deepEqual(lifecycle, ["init", "handleUpdate"]);
 });
 
 test("an invalid webhook secret is rejected before processing", async () => {
@@ -55,6 +61,7 @@ test("an invalid webhook secret is rejected before processing", async () => {
   const response = await handleTelegramWebhook(request('{"update_id":1}', "wrong-secret"), {
     environment,
     bot: {
+      async init() {},
       async handleUpdate() {
         called = true;
       },
@@ -132,6 +139,7 @@ test("grammY processing failures do not expose error details", async () => {
     environment,
     logger: { error: (message) => logs.push(message) },
     bot: {
+      async init() {},
       async handleUpdate() {
         throw new Error(sensitiveValue);
       },

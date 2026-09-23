@@ -14,6 +14,7 @@ const updateSchema = z.object({
 }).passthrough();
 
 interface WebhookBot {
+  init(): Promise<void>;
   handleUpdate(update: Update): Promise<void>;
 }
 
@@ -34,10 +35,26 @@ const defaultLogger: WebhookLogger = {
 };
 
 let cachedBot: WebhookBot | undefined;
+const botInitializations = new WeakMap<WebhookBot, Promise<void>>();
 
 function getBot(token: string): WebhookBot {
   cachedBot ??= createPostalCodeBot(token);
   return cachedBot;
+}
+
+async function ensureBotInitialized(bot: WebhookBot): Promise<void> {
+  let initialization = botInitializations.get(bot);
+  if (initialization === undefined) {
+    initialization = bot.init();
+    botInitializations.set(bot, initialization);
+  }
+
+  try {
+    await initialization;
+  } catch (error) {
+    botInitializations.delete(bot);
+    throw error;
+  }
 }
 
 export function isValidWebhookSecret(received: string | null, expected: string): boolean {
@@ -93,6 +110,7 @@ export async function handleTelegramWebhook(
 
   try {
     const bot = dependencies.bot ?? getBot(environment.BOT_TOKEN);
+    await ensureBotInitialized(bot);
     await bot.handleUpdate(parsedUpdate.data as Update);
     return new Response("OK", { status: 200 });
   } catch {
